@@ -70,12 +70,12 @@ class HuggingFaceServer:
         with htrack_block(f"Loading Hugging Face model for config {model_config}"):
             # WARNING this may fail if your GPU does not have enough memory
             quantization_config: Optional[HuggingfaceModelQuantizationConfig] = model_config.quantization_config
-            if quantization_config and model_config.quantization_config.model_loader == ModelLoader.AWQ:
+            if quantization_config and quantization_config.model_loader == ModelLoader.AWQ:
                 from awq import AutoAWQForCausalLM
                 self.model = AutoAWQForCausalLM.from_quantized(
                     model_name, model_config.quantization_config.quant_file, fuse_layers=True
                 )
-            elif quantization_config and model_config.quantization_config.model_loader == ModelLoader.GPTQ:
+            elif quantization_config and quantization_config.model_loader == ModelLoader.GPTQ:
                 from auto_gptq import AutoGPTQForCausalLM
                 self.model = AutoGPTQForCausalLM.from_quantized(
                     model_name, trust_remote_code=True,
@@ -87,7 +87,8 @@ class HuggingFaceServer:
                     model_name, trust_remote_code=True, **model_kwargs
                 ).to(self.device)
         with htrack_block(f"Loading Hugging Face tokenizer model for config {model_config}"):
-            if model_config.quantization_config.tokenizer_name:
+            # When the quantized model has uses a different tokenizer than its moddel name
+            if quantization_config and model_config.quantization_config.tokenizer_name:
                 tokenizer_name: str = model_config.quantization_config.tokenizer_name
                 if "revision" in model_kwargs:
                     model_kwargs.pop("revision")
