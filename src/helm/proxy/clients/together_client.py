@@ -12,7 +12,8 @@ from helm.common.tokenization_request import (
     DecodeRequestResult,
 )
 from .client import Client, wrap_request_time, truncate_sequence, cleanup_str
-
+from helm.proxy.models import Model, TEXT_MODEL_TAG, MODEL_NAME_TO_MODEL, ALL_MODELS
+from helm.common.hierarchical_logger import hlog
 
 _ASYNC_MODELS: Set[str] = {
     # Legacy models
@@ -299,3 +300,15 @@ class TogetherClient(Client):
 
     def decode(self, request: DecodeRequest) -> DecodeRequestResult:
         raise NotImplementedError("Use the HuggingFaceClient to decode.")
+
+
+def register_custom_together_model(model_id):
+    model = Model(
+        group="together",
+        name=model_id,
+        tags=[TEXT_MODEL_TAG],
+    )
+    MODEL_ALIASES[model_id] = model_id
+    MODEL_NAME_TO_MODEL[model_id] = model
+    ALL_MODELS.append(model)
+    hlog(f"Registered Together model: {model}")
