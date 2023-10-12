@@ -67,7 +67,7 @@ class HuggingFaceServer:
         elif model_config.model_dtype == WeightType.BFLOAT16:
             model_kwargs["torch_dtype"] = torch.bfloat16
 
-        model_kwargs["device_map"] = "auto"
+        model_kwargs["device_map"] = model_config.device_map
 
         with htrack_block(f"Loading Hugging Face model for config {model_config}"):
             # WARNING this may fail if your GPU does not have enough memory
