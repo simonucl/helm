@@ -67,6 +67,8 @@ class HuggingFaceServer:
         elif model_config.model_dtype == WeightType.BFLOAT16:
             model_kwargs["torch_dtype"] = torch.bfloat16
 
+        model_kwargs["device_map"] = "auto"
+
         with htrack_block(f"Loading Hugging Face model for config {model_config}"):
             # WARNING this may fail if your GPU does not have enough memory
             quantization_config: Optional[HuggingfaceModelQuantizationConfig] = model_config.quantization_config
@@ -81,11 +83,11 @@ class HuggingFaceServer:
                     model_name, trust_remote_code=True,
                     disable_exllama=model_config.quantization_config.disable_exllama,
                     **model_kwargs
-                ).to(self.device)
+                )
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name, trust_remote_code=True, **model_kwargs
-                ).to(self.device)
+                )
         with htrack_block(f"Loading Hugging Face tokenizer model for config {model_config}"):
             # When the quantized model has uses a different tokenizer than its moddel name
             if quantization_config and model_config.tokenizer_name:

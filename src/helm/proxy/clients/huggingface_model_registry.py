@@ -66,6 +66,8 @@ class HuggingFaceHubModelConfig:
 
     tokenizer_name: Optional[str] = None
 
+    device_map: Optional[str] = "auto"
+
     quantization_config: Optional[HuggingfaceModelQuantizationConfig] = None
     """Additional configuration if the model is quantized
     
@@ -130,6 +132,8 @@ class HuggingFaceLocalModelConfig:
     model_dtype: Optional[WeightType] = None
 
     tokenizer_name: Optional[str] = None
+
+    device_map: Optional[str] = "auto"
 
     quantization_config: Optional[HuggingfaceModelQuantizationConfig] = None
     """Additional configuration if the model is quantized
