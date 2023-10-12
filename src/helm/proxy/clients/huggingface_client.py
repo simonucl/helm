@@ -90,7 +90,7 @@ class HuggingFaceServer:
                 )
         with htrack_block(f"Loading Hugging Face tokenizer model for config {model_config}"):
             # When the quantized model has uses a different tokenizer than its moddel name
-            if quantization_config and model_config.tokenizer_name:
+            if model_config.tokenizer_name:
                 tokenizer_name: str = model_config.tokenizer_name
                 if "revision" in model_kwargs:
                     model_kwargs.pop("revision")
