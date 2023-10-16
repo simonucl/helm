@@ -28,6 +28,8 @@ from helm.proxy.clients.huggingface_model_registry import (
 )
 from threading import Lock
 
+from ...common.request import ErrorFlags
+
 
 class StopOnToken(StoppingCriteria):
     """
@@ -268,7 +270,10 @@ class HuggingFaceClient(Client):
             response, cached = self.cache.get(cache_key, wrap_request_time(do_it))
         except Exception as e:  # Do something if error is encountered.
             error: str = f"HuggingFace error: {e}"
-            return RequestResult(success=False, cached=False, error=error, completions=[], embedding=[])
+            return RequestResult(
+                success=False, cached=False, error=error, completions=[], embedding=[],
+                error_flags=ErrorFlags(is_retriable=False, is_fatal=False),
+            )
 
         completions = []
         for raw_completion in response["completions"]:
