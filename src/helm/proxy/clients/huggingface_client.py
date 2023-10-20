@@ -82,6 +82,7 @@ class HuggingFaceServer:
                 self.model = AutoGPTQForCausalLM.from_quantized(
                     model_name, trust_remote_code=True,
                     disable_exllama=model_config.quantization_config.disable_exllama,
+                    inject_fused_attention=model_config.quantization_config.inject_fused_attention,
                     **model_kwargs
                 )
             else:
