@@ -219,6 +219,18 @@ ALL_MODELS = [
             INSTRUCTION_FOLLOWING_MODEL_TAG,
         ],
     ),
+    Model(
+        group="anthropic",
+        name="anthropic/claude-2.0",
+        tags=[
+            ANTHROPIC_MODEL_TAG,
+            TEXT_MODEL_TAG,
+            LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG,
+            GPT2_TOKENIZER_TAG,
+            ABLATION_MODEL_TAG,
+            INSTRUCTION_FOLLOWING_MODEL_TAG,
+        ],
+    ),
     # BigScience
     Model(
         group="together",
