@@ -270,11 +270,12 @@ class HuggingFaceClient(Client):
             cache_key = Client.make_cache_key(raw_request, request)
             response, cached = self.cache.get(cache_key, wrap_request_time(do_it))
         except Exception as e:  # Do something if error is encountered.
-            error: str = f"HuggingFace error: {e}"
-            return RequestResult(
-                success=False, cached=False, error=error, completions=[], embedding=[],
-                error_flags=ErrorFlags(is_retriable=False, is_fatal=True),
-            )
+            raise e
+            # error: str = f"HuggingFace error: {e}"
+            # return RequestResult(
+            #     success=False, cached=False, error=error, completions=[], embedding=[],
+            #     error_flags=ErrorFlags(is_retriable=False, is_fatal=True),
+            # )
 
         completions = []
         for raw_completion in response["completions"]:
@@ -354,8 +355,9 @@ class HuggingFaceClient(Client):
 
             result, cached = self.cache.get(cache_key, wrap_request_time(do_it))
         except Exception as e:
-            error: str = f"HuggingFace error: {e}"
-            return TokenizationRequestResult(success=False, cached=False, error=error, text="", tokens=[])
+            # error: str = f"HuggingFace error: {e}"
+            # return TokenizationRequestResult(success=False, cached=False, error=error, text="", tokens=[])
+            raise e
 
         return TokenizationRequestResult(
             success=True,
