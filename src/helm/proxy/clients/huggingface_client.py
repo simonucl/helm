@@ -87,10 +87,13 @@ class HuggingFaceServer:
                     inject_fused_attention=model_config.quantization_config.inject_fused_attention,
                     **model_kwargs
                 )
+                hlog(self.model.hf_device_map)
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name, trust_remote_code=True, **model_kwargs
                 )
+                hlog(self.model.hf_device_map)
+
         with htrack_block(f"Loading Hugging Face tokenizer model for config {model_config}"):
             # When the quantized model has uses a different tokenizer than its moddel name
             if model_config.tokenizer_name:
