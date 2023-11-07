@@ -10,6 +10,8 @@ TASK_DESCRIPTIONS = {
 
 ANSWER_MAPPING = {"predict_annual_income": {0: "no", 1: "yes"}}
 
+TASK_DATASET_MAPPING = {"predict_annual_income": "adult"}
+
 
 class FairnessScenario(Scenario):
     """
@@ -24,7 +26,7 @@ class FairnessScenario(Scenario):
     def __init__(self, task: str, train_br: float, test_br: float, num_train: int, num_test: int) -> None:
         super().__init__()
         self.task = task
-        self.subscenario = f"{task}_{num_train}_{num_test}_train_br_{train_br}_test_br_{test_br}.jsonl"
+        self.subscenario = f"{TASK_DATASET_MAPPING[task]}_{num_train}_{num_test}_train_br_{train_br}_test_br_{test_br}.jsonl"
         self.task_message = TASK_DESCRIPTIONS[self.task]
 
     def get_input(self, text) -> Input:
