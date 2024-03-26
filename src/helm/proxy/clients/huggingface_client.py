@@ -90,7 +90,6 @@ class HuggingFaceServer:
                 )
                 hlog(self.model.hf_device_map)
             elif quantization_config and quantization_config.model_loader == ModelLoader.SQUEEZELLM:
-                import torch
                 from squeezellm.modelutils import find_layers
                 from squeezellm.quant import make_quant_lut
 
