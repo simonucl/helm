@@ -111,7 +111,7 @@ class HuggingFaceServer:
 
                     model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype="auto")
 
-                model = model.eval()
+                model = model.to(self.device).eval()
                 layers = find_layers(model)
 
                 state_dict = torch.load(quantization_config.quant_file)
