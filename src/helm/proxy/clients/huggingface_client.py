@@ -71,7 +71,8 @@ class HuggingFaceServer:
             model_kwargs["torch_dtype"] = torch.bfloat16
 
         model_kwargs["device_map"] = model_config.device_map
-
+        model_kwargs["attn_implementation"] = "flash_attention_2"
+        
         with htrack_block(f"Loading Hugging Face model for config {model_config}"):
             # WARNING this may fail if your GPU does not have enough memory
             quantization_config: Optional[HuggingfaceModelQuantizationConfig] = model_config.quantization_config
